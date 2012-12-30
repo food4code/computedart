@@ -73,6 +73,7 @@
 # Setting to turn on featured images for blog posts. Defaults to False.
 #
 # BLOG_USE_FEATURED_IMAGE = True
+BLOG_SLUG = ""
 
 # If True, the south application will be automatically added to the
 # INSTALLED_APPS setting.
@@ -224,6 +225,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 ################
 
 INSTALLED_APPS = (
+    "art.classic",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -241,6 +243,7 @@ INSTALLED_APPS = (
     "mezzanine.pages",
     "mezzanine.galleries",
     "mezzanine.twitter",
+    #"mezzanine_themes.classic",
     #"mezzanine.accounts",
     #"mezzanine.mobile",
 )
