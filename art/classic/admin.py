@@ -1,31 +1,21 @@
-from copy import deepcopy
+
 from django.contrib import admin
-from mezzanine.galleries.admin import GalleryAdmin
-from mezzanine.galleries.models import Gallery, GalleryImage
+
+from mezzanine.core.admin import TabularDynamicInlineAdmin
+from mezzanine.pages.admin import PageAdmin
+from art.classic.models import Galleria, GalleriaImage
 
 
-gallery_extra_fieldsets = ((None, {"fields": ("sold",)}),)
-m_fieldsets = deepcopy(GalleryAdmin.fieldsets)
-print(m_fieldsets[0][1]["fields"] )
-#m_fieldsets[0][1]["fields"].insert(-1, "sold")
+class GalleriaImageInline(TabularDynamicInlineAdmin):
+    model = GalleriaImage
 
-class MyGalleryAdmin(GalleryAdmin):
-    fieldsets = m_fieldsets
 
-admin.site.unregister(Gallery)
-admin.site.register(Gallery, MyGalleryAdmin)
-#
-#from copy import deepcopy
-#from django.contrib import admin
-#from mezzanine.blog.admin import BlogPostAdmin
-#from mezzanine.blog.models import BlogPost
-#
-#blog_fieldsets = deepcopy(BlogPostAdmin.fieldsets)
-##print(blog_fieldsets )
-#blog_fieldsets[0][1]["fields"].insert(-2, "image")
-#
-#class MyBlogPostAdmin(BlogPostAdmin):
-#    fieldsets = blog_fieldsets
-#
-#admin.site.unregister(BlogPost)
-#admin.site.register(BlogPost, MyBlogPostAdmin)
+class GalleriaAdmin(PageAdmin):
+
+    class Media:
+        css = {"all": ("mezzanine/css/admin/gallery.css",)}
+
+    inlines = (GalleriaImageInline,)
+
+
+admin.site.register(Galleria, GalleriaAdmin)

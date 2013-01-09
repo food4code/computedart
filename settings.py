@@ -69,15 +69,16 @@
 #         {"blank": True, "default": 1},
 #     ),
 # )
-EXTRA_MODEL_FIELDS = (
-     (
-         "mezzanine.galleries.models.GalleryImage.sold",
-#         "mezzanine.pages.models.Page.sold",
-         "IntegerField", # 'django.db.models.' is implied if path is omitted.
-         ("Sold",),
-         {"blank": True, "default": 0},
-     ),
-)
+#EXTRA_MODEL_FIELDS = (
+#     (
+#         "mezzanine.galleries.models.GalleryImage.sold",
+##         "mezzanine.pages.models.Page.sold",
+#         "IntegerField", # 'django.db.models.' is implied if path is omitted.
+#         ("Sold",),
+#         {"blank": True, "default": 0},
+#     ),
+#)
+
 # Setting to turn on featured images for blog posts. Defaults to False.
 #
 # BLOG_USE_FEATURED_IMAGE = True
@@ -231,6 +232,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 ################
 # APPLICATIONS #
 ################
+
 
 INSTALLED_APPS = (
     "art.classic",
