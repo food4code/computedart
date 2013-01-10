@@ -22,7 +22,7 @@ from mezzanine.core.managers import SearchableManager
 # Set the directory where gallery images are uploaded to,
 # either MEDIA_ROOT + 'galleries', or filebrowser's upload
 # directory if being used.
-GALLERIES_UPLOAD_DIR = "classic"
+GALLERIES_UPLOAD_DIR = "galleries"
 if settings.PACKAGE_NAME_FILEBROWSER in settings.INSTALLED_APPS:
     fb_settings = "%s.settings" % settings.PACKAGE_NAME_FILEBROWSER
     try:
@@ -37,10 +37,9 @@ class Galleria(Page, RichText):
     """
 
     zip_import = models.FileField(verbose_name=_("Zip import"), blank=True,
-        upload_to=upload_to("classic.Galleria.zip_import", "galleries"),
+        upload_to=upload_to("galleries.Galleria.zip_import", "galleries"),
         help_text=_("Upload a zip file containing images, and "
                     "they'll be imported into this gallery."))
-
     class Meta:
         verbose_name = _("Galleria")
         verbose_name_plural = _("Gallerie")
@@ -90,14 +89,14 @@ class GalleriaImage(Orderable):
 
     gallery = models.ForeignKey("Galleria", related_name="images")
     file = FileField(_("File"), max_length=200, format="Image",
-        upload_to=upload_to("classic.GalleriaImage.file", "galleries"))
-    title = models.CharField("Title", max_length=100, blank=True)
-    description = models.CharField(_("Description"), max_length=1000, blank=True)
-    sold = models.IntegerField(_("items sold"),
-        help_text=_("number of item sold"), default= 0 )
+        upload_to=upload_to("galleries.GalleriaImage.file", "galleries"))
+    title = models.CharField("Title", max_length=40, blank=True)
+    description = models.CharField(_("Description"), max_length=500, blank=True)
+    sold = models.IntegerField(_("items sold"), max_length=3, null=True, blank=True )
     notes = models.TextField(_("Notes"), blank=True)
-    filename = models.CharField("filename", max_length=20, editable=False, blank=True)
+    filename = models.CharField("filename", max_length=30, blank=True) #editable=False,
 
+    
     objects = SearchableManager()
     search_fields = {"title":5, "description":2, "notes":1}
 
@@ -126,5 +125,7 @@ class GalleriaImage(Orderable):
                 self.description = name
             if not self.title:
                 self.title = name
+            if not self.sold:
+                self.sold = 0
 
         super(GalleriaImage, self).save(*args, **kwargs)

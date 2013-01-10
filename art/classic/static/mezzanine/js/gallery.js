@@ -22,7 +22,7 @@ $(function () {
             itemSelector:$item, // selector for all items you'll retrieve
             animate      : false,
             extraScrollPx: 50,
-            bufferPx     : 10
+            bufferPx     : 30
             //debug        : true
         },
         function (newElements) {

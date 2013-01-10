@@ -1,0 +1,9 @@
+/*.dynamic-inline .vTextField {width:700px !important;}*/
+/*.vIntegerField*/
+.sold input {
+    width: 20px !important;
+}
+.notes textarea {
+    min-width: 400px !important;
+    min-height: 120px !important;;
+}

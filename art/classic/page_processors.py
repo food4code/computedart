@@ -1,7 +1,7 @@
 
 from mezzanine.pages.page_processors import processor_for
-#from mezzanine.utils.views import paginate
-from mezzanine.galleries.models import Gallery, GalleryImage
+#from mezzanine.utils.views import paginate #we use our custom paginator to raise 404 for not existing pages
+from .models import Galleria, GalleriaImage
 
 
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -31,9 +31,9 @@ def paginate(objects, page_num, per_page, max_paging_links):
     objects.visible_page_range = page_range
     return objects
 
-@processor_for(Gallery, exact_page=True)
+@processor_for(Galleria, exact_page=True)
 def image_list(request, page):
-    images = GalleryImage.objects.all()
+    images = GalleriaImage.objects.all()
     MAX_PAGING_LINKS = int(len(images)/IMAGES_POST_PER_PAGE)
     print()
     images = paginate(images, request.GET.get("page", 1),

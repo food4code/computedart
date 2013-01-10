@@ -8,12 +8,12 @@ from art.classic.models import Galleria, GalleriaImage
 
 class GalleriaImageInline(TabularDynamicInlineAdmin):
     model = GalleriaImage
-
+    readonly_fields = ('filename',)
 
 class GalleriaAdmin(PageAdmin):
 
     class Media:
-        css = {"all": ("mezzanine/css/admin/gallery.css",)}
+        css = {"all": ("css/admin/gallery.css",)}
 
     inlines = (GalleriaImageInline,)
 
