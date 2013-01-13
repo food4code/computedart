@@ -7,15 +7,18 @@ from zipfile import ZipFile
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from django.core.urlresolvers import reverse, resolve
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from mezzanine.conf import settings
 from mezzanine.core.fields import FileField
-from mezzanine.core.models import Orderable, RichText
+from mezzanine.core.models import Orderable, RichText, Slugged
 from mezzanine.pages.models import Page
 from mezzanine.utils.importing import import_dotted_path
 from mezzanine.utils.models import upload_to
+from mezzanine.utils.urls import slugify
 from mezzanine.core.managers import SearchableManager
 
 
@@ -85,20 +88,21 @@ class Galleria(Page, RichText):
                 self.zip_import.delete(save=True)
 
 
-class GalleriaImage(Orderable):
+class GalleriaImage(Orderable, Slugged):
 
     gallery = models.ForeignKey("Galleria", related_name="images")
     file = FileField(_("File"), max_length=200, format="Image",
-        upload_to=upload_to("galleries.GalleriaImage.file", "galleries"))
-    title = models.CharField("Title", max_length=40, blank=True)
+        upload_to=upload_to("classic.GalleriaImage.file", "galleries"))
+    #title = models.CharField("Title", max_length=40, blank=True)
     description = models.CharField(_("Description"), max_length=500, blank=True)
     sold = models.IntegerField(_("items sold"), max_length=3, null=True, blank=True )
     notes = models.TextField(_("Notes"), blank=True)
     filename = models.CharField("filename", max_length=30, blank=True) #editable=False,
 
-    
+
     objects = SearchableManager()
-    search_fields = {"title":5, "description":2, "notes":1}
+    search_fields = ("title", "description")
+#    search_fields = {"title":5, "description":3, "filename":2, "notes":2}
 
     class Meta:
         verbose_name = _("Image")
@@ -129,3 +133,9 @@ class GalleriaImage(Orderable):
                 self.sold = 0
 
         super(GalleriaImage, self).save(*args, **kwargs)
+
+    #@models.permalink
+    def get_absolute_url(self):
+        url =  self.file.url
+        return url
+#        return reverse("image_detail", kwargs={"slug": self.slug})

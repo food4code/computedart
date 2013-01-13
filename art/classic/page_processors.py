@@ -7,7 +7,7 @@ from .models import Galleria, GalleriaImage
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.http import Http404
 
-IMAGES_POST_PER_PAGE = 8
+IMAGES_POST_PER_PAGE = 8 # TODO: Make it in default.py
 
 def paginate(objects, page_num, per_page, max_paging_links):
     """

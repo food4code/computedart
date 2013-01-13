@@ -20,6 +20,7 @@ ADMIN_MENU_ORDER = (
 )
 
 ADMIN_THUMB_SIZE = "124x124"
+SEARCH_MODEL_CHOICES = ('blog.BlogPost', 'classic.GalleriaImage')
 
 #        "generic.ThreadedComment", ("Media Library", "fb_browse"),)),
 
@@ -255,11 +256,12 @@ INSTALLED_APPS = (
     "mezzanine.blog",
     "mezzanine.forms",
     "mezzanine.pages",
-    #"mezzanine.galleries",
-    "mezzanine.twitter",
+    "mezzanine.galleries",
+#    "mezzanine.twitter",
     #"mezzanine_themes.classic",
     #"mezzanine.accounts",
     #"mezzanine.mobile",
+    "django_extensions",
 )
 
 # List of processors used by RequestContext to populate the context.
