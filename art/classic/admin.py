@@ -9,6 +9,7 @@ from art.classic.models import Galleria, GalleriaImage
 class GalleriaImageInline(TabularDynamicInlineAdmin):
     model = GalleriaImage
     readonly_fields = ('filename',)
+    exclude = ('slug',)
 
 class GalleriaAdmin(PageAdmin):
 

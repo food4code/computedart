@@ -86,7 +86,7 @@ SEARCH_MODEL_CHOICES = ('blog.BlogPost', 'classic.GalleriaImage')
 
 # Setting to turn on featured images for blog posts. Defaults to False.
 #
-# BLOG_USE_FEATURED_IMAGE = True
+BLOG_USE_FEATURED_IMAGE = True
 BLOG_SLUG = ""
 
 # If True, the south application will be automatically added to the

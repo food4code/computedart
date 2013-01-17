@@ -93,7 +93,7 @@ class GalleriaImage(Orderable, Slugged):
     gallery = models.ForeignKey("Galleria", related_name="images")
     file = FileField(_("File"), max_length=200, format="Image",
         upload_to=upload_to("classic.GalleriaImage.file", "galleries"))
-    #title = models.CharField("Title", max_length=40, blank=True)
+#    title = models.CharField("Title", max_length=40, blank=True)
     description = models.CharField(_("Description"), max_length=500, blank=True)
     sold = models.IntegerField(_("items sold"), max_length=3, null=True, blank=True )
     notes = models.TextField(_("Notes"), blank=True)
@@ -125,8 +125,6 @@ class GalleriaImage(Orderable, Slugged):
             # http://bugs.python.org/issue6412
             name = "".join([s.upper() if i == 0 or name[i - 1] == " " else s
                             for i, s in enumerate(name)])
-            if not self.description:
-                self.description = name
             if not self.title:
                 self.title = name
             if not self.sold:
