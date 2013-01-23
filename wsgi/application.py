@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+sys.path.append(os.path.join(os.environ['OPENSHIFT_REPO_DIR']))
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
+virtenv = os.environ['OPENSHIFT_HOMEDIR'] + 'python-2.6/virtenv/'
+
+# env shows this as the egg cache:
+# PYTHON_EGG_CACHE=/var/lib/openshift/ecad07d3b3a7455085c8644d2f04e6bc/python-2.6/.python-eggs/
+os.environ['PYTHON_EGG_CACHE'] = os.path.join(virtenv, 'lib/python2.6/site-packages')
+
+virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
+try:
+    execfile(virtualenv, dict(__file__=virtualenv))
+except IOError:
+    pass
+#
+# IMPORTANT: Put any additional includes below this line. If placed above this
+# line, it's possible required libraries won't be in your searchable path
+#
+
+import django.core.handlers.wsgi
+application = django.core.handlers.wsgi.WSGIHandler()

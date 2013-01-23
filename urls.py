@@ -5,8 +5,8 @@ from django.contrib import admin
 from mezzanine.core.views import direct_to_template
 
 from mezzanine.galleries.models import Gallery
-
-
+import settings
+from django.views.static import serve
 
 admin.autodiscover()
 
@@ -16,6 +16,7 @@ admin.autodiscover()
 
 urlpatterns = patterns("",
 
+#    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', { 'document_root': settings.STATIC_ROOT} ) ,
     # Change the admin prefix here to use an alternate URL for the
     # admin interface, which would be marginally more secure.
     ("^admin/", include(admin.site.urls)),

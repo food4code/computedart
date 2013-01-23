@@ -1,3 +1,4 @@
+PRODUCTION = False
 
 ######################
 # MEZZANINE SETTINGS #
@@ -13,11 +14,11 @@
 # Controls the ordering and grouping of the admin menu.
 #
 ADMIN_MENU_ORDER = (
-     ("Content", ("pages.Page", "blog.BlogPost",
-                  ("Galleria", "art.classic.Galleria"),  ("Media Library", "fb_browse"),)),
-     ("Site", ("sites.Site", "redirects.Redirect", "conf.Setting")),
-     ("Users", ("auth.User", "auth.Group",)),
-)
+    ("Content", ("pages.Page", "blog.BlogPost",
+                 ("Galleria", "art.classic.Galleria"), ("Media Library", "fb_browse"),)),
+    ("Site", ("sites.Site", "redirects.Redirect", "conf.Setting")),
+    ("Users", ("auth.User", "auth.Group",)),
+    )
 
 ADMIN_THUMB_SIZE = "124x124"
 SEARCH_MODEL_CHOICES = ('blog.BlogPost', 'classic.GalleriaImage')
@@ -102,7 +103,7 @@ USE_SOUTH = True
 # In the format (('Full Name', 'email@example.com'),
 #                ('Full Name', 'anotheremail@example.com'))
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+# ('Your Name', 'your_email@domain.com'),
 )
 MANAGERS = ADMINS
 
@@ -148,7 +149,7 @@ INTERNAL_IPS = ("127.0.0.1",)
 TEMPLATE_LOADERS = (
     "django.template.loaders.filesystem.Loader",
     "django.template.loaders.app_directories.Loader",
-)
+    )
 
 AUTHENTICATION_BACKENDS = ("mezzanine.core.auth_backends.MezzanineBackend",)
 
@@ -157,8 +158,8 @@ AUTHENTICATION_BACKENDS = ("mezzanine.core.auth_backends.MezzanineBackend",)
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    )
 
 
 #############
@@ -179,7 +180,7 @@ DATABASES = {
         "HOST": "",
         # Set to empty string for default. Not used with sqlite3.
         "PORT": "",
-    }
+        }
 }
 
 
@@ -257,12 +258,15 @@ INSTALLED_APPS = (
     "mezzanine.forms",
     "mezzanine.pages",
     "mezzanine.galleries",
-#    "mezzanine.twitter",
+    #    "mezzanine.twitter",
     #"mezzanine_themes.classic",
     #"mezzanine.accounts",
     #"mezzanine.mobile",
-    "django_extensions",
-)
+#    "s3sync",
+    'storages',
+    )
+
+
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
@@ -277,7 +281,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.core.context_processors.tz",
     "mezzanine.conf.context_processors.settings",
-)
+    )
 
 # List of middleware classes to use. Order is important; in the request phase,
 # these middleware classes will be applied in the order given, and in the
@@ -299,7 +303,7 @@ MIDDLEWARE_CLASSES = (
     # "mezzanine.core.middleware.SSLRedirectMiddleware",
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
-)
+    )
 
 # Store these package names here as they may change in the future since
 # at the moment we are using custom forks of them.
@@ -317,7 +321,7 @@ OPTIONAL_APPS = (
     "compressor",
     PACKAGE_NAME_FILEBROWSER,
     PACKAGE_NAME_GRAPPELLI,
-)
+    )
 
 DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 
@@ -352,10 +356,18 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 # Allow any settings to be defined in local_settings.py which should be
 # ignored in your version control system allowing for settings to be
 # defined per machine.
-try:
-    from local_settings import *
-except ImportError:
-    pass
+
+#if 'VCAP_SERVICES' in os.environ:
+if PRODUCTION:
+    try:
+        from production_settings import *
+    except ImportError:
+        pass
+else:
+    try:
+        from local_settings import *
+    except ImportError:
+        pass
 
 
 ####################
