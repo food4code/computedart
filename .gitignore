@@ -4,6 +4,7 @@
 .DS_Store
 .coverage
 local_settings.py
+production_settings.py
 /static
 *~
 .idea
