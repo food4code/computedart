@@ -109,7 +109,7 @@ class GalleriaImage(Orderable, Slugged):
         verbose_name_plural = _("Images")
 
     def __unicode__(self):
-        return self.description
+        return self.title
 
     def save(self, *args, **kwargs):
         """
@@ -117,6 +117,7 @@ class GalleriaImage(Orderable, Slugged):
         file name.
         """
         if not self.id:
+
             name = unquote(self.file.url).split("/")[-1]
             self.filename = name
             name = name.rsplit(".", 1)[0].replace("'", "")
