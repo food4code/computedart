@@ -10,3 +10,4 @@ production_settings.py
 .idea
 mezzanine_themes
 default
+.directory

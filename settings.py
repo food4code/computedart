@@ -1,4 +1,3 @@
-PRODUCTION = False
 
 ######################
 # MEZZANINE SETTINGS #
@@ -357,7 +356,10 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 # ignored in your version control system allowing for settings to be
 # defined per machine.
 
-#if 'VCAP_SERVICES' in os.environ:
+PRODUCTION = False
+for e in ('OPENSHIFT_APP_NAME', 'VCAP_SERVICES'):
+    if e in os.environ: PRODUCTION = True
+
 if PRODUCTION:
     try:
         from production_settings import *
