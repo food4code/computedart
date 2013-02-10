@@ -32,6 +32,9 @@ if paasIs('OPENSHIFT'): # OPENSHIFT
             backend['hostname'] = url.hostname
             backend['port'] = url.port
 
+    STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'static')
+    MEDIA_ROOT = os.path.join(os.environ.get('OPENSHIFT_DATA_DIR'), 'media')
+
 elif paasIs('VCAP'): # APPFOG
     services = json.loads(os.environ['VCAP_SERVICES'])
     if 'postgresql' in services:
