@@ -9,7 +9,9 @@ source ${OPENSHIFT_HOMEDIR}python-2.6/virtenv/bin/activate
 export PYTHON_EGG_CACHE=${OPENSHIFT_HOME_DIR}python-2.6/virtenv/lib/python-2.6/site-packages
 
 echo "Executing 'python ${OPENSHIFT_REPO_DIR}app/manage.py syncdb --noinput'"
-python "$OPENSHIFT_REPO_DIR"app/manage.py syncdb --noinput
+#python "$OPENSHIFT_REPO_DIR"app/manage.py syncdb --noinput
+python "$OPENSHIFT_REPO_DIR"app/manage.py createdb --noinput --nodata
+
 
 echo "Executing 'python ${OPENSHIFT_REPO_DIR}app/manage.py make_admin'"
 #python "$OPENSHIFT_REPO_DIR"app/manage.py make_admin
