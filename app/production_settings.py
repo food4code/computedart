@@ -5,25 +5,34 @@ import json
 
 DEBUG = True
 
+
+
+def paasIs(name='not set'): # Returns whether is running in a PaaS if invoked without a name
+    PaaS = ('OPENSHIFT_APP_NAME', 'VCAP_SERVICES')
+    for env in PaaS:
+        if env in os.environ:
+            if name == 'not set' or name in env:
+                return True
+    return False
+
 backend = {'engine':'django.db.backends.sqlite3', 'name':'dev.db', 'user':'', 'password':'', 'hostname':'', 'port':''} #default
 
-from .settings import PAAS
+if paasIs('OPENSHIFT'): # OPENSHIFT
+    for db in ('OPENSHIFT_MYSQL_DB_URL', 'OPENSHIFT_POSTGRESQL_DB_URL'):
+        if db in os.environ:
+            backend['name'] = os.environ['OPENSHIFT_APP_NAME']
+            if 'MYSQL' in db:
+                url = urlparse.urlparse(os.environ.get('OPENSHIFT_MYSQL_DB_URL'))
+                backend['engine'] = 'django.db.backends.mysql'
+            else:
+                url = urlparse.urlparse(os.environ.get('OPENSHIFT_POSTGRESQL_DB_URL'))
+                backend['engine'] = 'django.db.backends.postgresql_psycopg2'
+            backend['user'] = url.username
+            backend['password'] = url.password
+            backend['hostname'] = url.hostname
+            backend['port'] = url.port
 
-if 'OPENSHIFT' in PAAS: # OPENSHIFT
-    url = ""
-    if 'OPENSHIFT_MYSQL_DB_URL' in os.environ:
-        url = urlparse.urlparse(os.environ.get('OPENSHIFT_MYSQL_DB_URL'))
-        backend['engine'] = 'django.db.backends.mysql'
-    elif 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
-        url = urlparse.urlparse(os.environ.get('OPENSHIFT_POSTGRESQL_DB_URL'))
-        backend['engine'] = 'django.db.backends.postgresql_psycopg2'
-    backend['name'] = os.environ['OPENSHIFT_APP_NAME']
-    backend['user'] = url.username
-    backend['password'] = url.password
-    backend['hostname'] = url.hostname
-    backend['port'] = url.port
-
-elif 'VCAP' in PAAS: # APPFOG
+elif paasIs('VCAP'): # APPFOG
     services = json.loads(os.environ['VCAP_SERVICES'])
     if 'postgresql' in services:
         backend = services['postgresql-9.1'][0]['credentials']

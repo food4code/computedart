@@ -355,15 +355,9 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 # Allow any settings to be defined in local_settings.py which should be
 # ignored in your version control system allowing for settings to be
 # defined per machine.
+from production_settings import paasIs
 
-PRODUCTION = False
-PAAS = ""
-for env in ('OPENSHIFT_APP_NAME', 'VCAP_SERVICES'):
-    if env in os.environ:
-        PAAS = env
-        PRODUCTION = True
-
-if PRODUCTION:
+if paasIs():
     try:
         from production_settings import *
     except ImportError:
