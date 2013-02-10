@@ -63,18 +63,18 @@ SECRET_KEY = "e4c025c5-19c5-eli5-bf8d-90ac32de137085bdf025-d693-4e69-bde1-d277a3
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
 
-CACHE_MIDDLEWARE_SECONDS = 60
-
-CACHE_MIDDLEWARE_KEY_PREFIX = "%(proj_name)s"
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
-        "LOCATION": "127.0.0.1:11211",
-    }
-}
-
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+#CACHE_MIDDLEWARE_SECONDS = 60
+#
+#CACHE_MIDDLEWARE_KEY_PREFIX = "%(proj_name)s"
+#
+#CACHES = {
+#    "default": {
+#        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
+#        "LOCATION": "127.0.0.1:11211",
+#    }
+#}
+#
+#SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 
 
