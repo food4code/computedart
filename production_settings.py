@@ -6,7 +6,7 @@ DEBUG = True
 
 backend = {'engine':'django.db.backends.sqlite3', 'name':'dev.db', 'user':'', 'password':'', 'hostname':'', 'port':''} #default
 
-
+from .settings import PAAS
 if 'OPENSHIFT' in PAAS: # OPENSHIFT
     url = ""
     if 'OPENSHIFT_MYSQL_DB_URL' in os.environ:
