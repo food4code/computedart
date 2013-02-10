@@ -2,7 +2,7 @@ import os
 import json
 
 
-DEBUG = False
+DEBUG = True
 
 backend = {'engine':'django.db.backends.sqlite3', 'name':'dev.db', 'user':'', 'password':'', 'hostname':'', 'port':''} #default
 

@@ -358,9 +358,9 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 
 PRODUCTION = False
 PAAS = ""
-for e in ('OPENSHIFT_APP_NAME', 'VCAP_SERVICES'):
-    if e in os.environ:
-        PAAS = e
+for env in ('OPENSHIFT_APP_NAME', 'VCAP_SERVICES'):
+    if env in os.environ:
+        PAAS = env
         PRODUCTION = True
 
 if PRODUCTION:
