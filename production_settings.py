@@ -4,20 +4,32 @@ import json
 
 DEBUG = False
 
-BACKENDS = 'postgresql'
-services = {}
-if 'VCAP_SERVICES' in os.environ:
+backend = {'engine':'django.db.backends.sqlite3', 'name':'dev.db', 'user':'', 'password':'', 'hostname':'', 'port':''} #default
+
+
+if 'OPENSHIFT' in PAAS: # OPENSHIFT
+    url = ""
+    if 'OPENSHIFT_MYSQL_DB_URL' in os.environ:
+        url = urlparse.urlparse(os.environ.get('OPENSHIFT_MYSQL_DB_URL'))
+        backend['engine'] = 'django.db.backends.mysql'
+    elif 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
+        url = urlparse.urlparse(os.environ.get('OPENSHIFT_POSTGRESQL_DB_URL'))
+        backend['engine'] = 'django.db.backends.postgresql_psycopg2'
+    backend['name'] = os.environ['OPENSHIFT_APP_NAME']
+    backend['user'] = url.username
+    backend['password'] = url.password
+    backend['hostname'] = url.hostname
+    backend['port'] = url.port
+
+elif 'VCAP' in PAAS: # APPFOG
     services = json.loads(os.environ['VCAP_SERVICES'])
+    if 'postgresql' in services:
+        backend = services['postgresql-9.1'][0]['credentials']
+        backend['engine'] = 'django.db.backends.postgresql_psycopg2'
+    elif 'mysql-5.1' in services:
+        backend = services['mysql-5.1'][0]['credentials']
+        backend['engine'] = 'django.db.backends.mysql'
 
-backend = {}
-if BACKENDS == 'postgresql':
-    backend = services['postgresql-9.1'][0]['credentials']
-    backend['engine'] = 'django.db.backends.postgresql_psycopg2'
-elif BACKENDS == 'mysql':
-    backend = services['mysql-5.1'][0]['credentials']
-    backend['engine'] = 'django.db.backends.mysql'
-
-## Pull in CloudFoundry's production settings
 DATABASES = {
     'default': {
         'ENGINE': backend['engine'],

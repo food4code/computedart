@@ -92,7 +92,7 @@ class GalleriaImage(Orderable, Slugged):
 
     gallery = models.ForeignKey("Galleria", related_name="images")
     file = FileField(_("File"), max_length=200, format="Image",
-        upload_to=upload_to("classic.GalleriaImage.file", "galleries"))
+        upload_to=upload_to("gallerie.GalleriaImage.file", "galleries"))
 #    title = models.CharField("Title", max_length=40, blank=True)
     description = models.CharField(_("Description"), max_length=500, blank=True)
     sold = models.IntegerField(_("items sold"), max_length=3, null=True, blank=True )

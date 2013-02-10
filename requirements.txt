@@ -14,6 +14,6 @@ pytz==2012h
 wsgiref==0.1.2
 
 
-python-dateutil
-boto
-django-storages
+#python-dateutil
+#boto
+#django-storages

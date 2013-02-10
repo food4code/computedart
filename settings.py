@@ -14,13 +14,13 @@
 #
 ADMIN_MENU_ORDER = (
     ("Content", ("pages.Page", "blog.BlogPost",
-                 ("Galleria", "art.classic.Galleria"), ("Media Library", "fb_browse"),)),
+                 ("Galleria", "app.gallerie.Galleria"), ("Media Library", "fb_browse"),)),
     ("Site", ("sites.Site", "redirects.Redirect", "conf.Setting")),
     ("Users", ("auth.User", "auth.Group",)),
     )
 
 ADMIN_THUMB_SIZE = "124x124"
-SEARCH_MODEL_CHOICES = ('blog.BlogPost', 'classic.GalleriaImage')
+SEARCH_MODEL_CHOICES = ('blog.BlogPost', 'gallerie.GalleriaImage')
 
 #        "generic.ThreadedComment", ("Media Library", "fb_browse"),)),
 
@@ -240,7 +240,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 
 
 INSTALLED_APPS = (
-    "art.classic",
+    "app.gallerie",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -262,7 +262,7 @@ INSTALLED_APPS = (
     #"mezzanine.accounts",
     #"mezzanine.mobile",
 #    "s3sync",
-    'storages',
+#    'storages',
     )
 
 
@@ -357,8 +357,11 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 # defined per machine.
 
 PRODUCTION = False
+PAAS = ""
 for e in ('OPENSHIFT_APP_NAME', 'VCAP_SERVICES'):
-    if e in os.environ: PRODUCTION = True
+    if e in os.environ:
+        PAAS = e
+        PRODUCTION = True
 
 if PRODUCTION:
     try:

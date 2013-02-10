@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from mezzanine.core.admin import TabularDynamicInlineAdmin
 from mezzanine.pages.admin import PageAdmin
-from art.classic.models import Galleria, GalleriaImage
+from app.gallerie.models import Galleria, GalleriaImage
 
 
 class GalleriaImageInline(TabularDynamicInlineAdmin):

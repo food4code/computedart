@@ -61,7 +61,7 @@ urlpatterns = patterns("",
 
     url("^$", "mezzanine.blog.views.blog_post_list", name="home"),
 
-    #url("^increment", "art.page_processors.increment", name="increment"),
+    #url("^increment", "app.page_processors.increment", name="increment"),
 
     # MEZZANINE'S URLS
     # ----------------
