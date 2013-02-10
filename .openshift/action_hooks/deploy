@@ -12,7 +12,7 @@ echo "Executing 'python ${OPENSHIFT_REPO_DIR}app/manage.py syncdb --noinput'"
 python "$OPENSHIFT_REPO_DIR"app/manage.py syncdb --noinput
 
 echo "Executing 'python ${OPENSHIFT_REPO_DIR}app/manage.py make_admin'"
-python "$OPENSHIFT_REPO_DIR"app/manage.py make_admin
+#python "$OPENSHIFT_REPO_DIR"app/manage.py make_admin
 
 echo "Executing 'python ${OPENSHIFT_REPO_DIR}app/manage.py collectstatic --noinput -v0'"
 python "$OPENSHIFT_REPO_DIR"app/manage.py collectstatic --noinput -v0
