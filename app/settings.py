@@ -240,7 +240,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 
 
 INSTALLED_APPS = (
-    "app.gallerie",
+    "gallerie",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -256,7 +256,7 @@ INSTALLED_APPS = (
     "mezzanine.blog",
     "mezzanine.forms",
     "mezzanine.pages",
-    "mezzanine.galleries",
+    #"mezzanine.galleries",
     #    "mezzanine.twitter",
     #"mezzanine_themes.classic",
     #"mezzanine.accounts",
