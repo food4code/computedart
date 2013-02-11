@@ -15,7 +15,7 @@ def paasIs(name='not set'): # Returns whether is running in a PaaS if invoked wi
                 return True
     return False
 
-backend = {'engine':'django.db.backends.sqlite3', 'name':'../../data/prod.db', 'user':'', 'password':'', 'hostname':'', 'port':''} #default
+backend = {'engine':'django.db.backends.sqlite3', 'name':'../../data/production.db', 'user':'', 'password':'', 'hostname':'', 'port':''} #default
 
 if paasIs('OPENSHIFT'): # OPENSHIFT
     for db in ('OPENSHIFT_MYSQL_DB_URL', 'OPENSHIFT_POSTGRESQL_DB_URL'):
