@@ -15,7 +15,7 @@ def paasIs(name='not set'): # Returns whether is running in a PaaS if invoked wi
                 return True
     return False
 
-backend = {'engine':'django.db.backends.sqlite3', 'name':'../../data/dev.db', 'user':'', 'password':'', 'hostname':'', 'port':''} #default
+backend = {'engine':'django.db.backends.sqlite3', 'name':'../../data/prod.db', 'user':'', 'password':'', 'hostname':'', 'port':''} #default
 
 if paasIs('OPENSHIFT'): # OPENSHIFT
     for db in ('OPENSHIFT_MYSQL_DB_URL', 'OPENSHIFT_POSTGRESQL_DB_URL'):
@@ -35,7 +35,7 @@ if paasIs('OPENSHIFT'): # OPENSHIFT
     STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'static')
     MEDIA_ROOT = os.path.join(os.environ.get('OPENSHIFT_DATA_DIR'), 'media')
 
-elif paasIs('VCAP'): # APPFOG
+elif paasIs('VCAP'): # CloudFoundry Core
     services = json.loads(os.environ['VCAP_SERVICES'])
     if 'postgresql' in services:
         backend = services['postgresql-9.1'][0]['credentials']
