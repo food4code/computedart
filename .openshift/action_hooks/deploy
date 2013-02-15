@@ -8,13 +8,22 @@ source ${OPENSHIFT_HOMEDIR}python-2.6/virtenv/bin/activate
  
 export PYTHON_EGG_CACHE=${OPENSHIFT_HOME_DIR}python-2.6/virtenv/lib/python-2.6/site-packages
 
-echo "Executing 'python ${OPENSHIFT_REPO_DIR}app/manage.py syncdb --noinput'"
-#python "$OPENSHIFT_REPO_DIR"app/manage.py syncdb --noinput
-python "$OPENSHIFT_REPO_DIR"app/manage.py createdb --noinput --nodata
+APP_ROOT=${OPENSHIFT_REPO_DIR}app
+MANAGE="python ${APP_ROOT}/manage.py "
+
+if [ ! -f $OPENSHIFT_DATA_DIR/production.db ]
+then
+  echo "COPYING DEV DB ++++++++++++++++++"
+  cp ${APP_ROOT}/dev.db $OPENSHIFT_DATA_DIR/production.db
+  echo "Executing $MANAGE make_admin"
+  #$MANAGE make_admin
+else
+  $MANAGE syncdb --noinput
+  $MANAGE migrate --noinput
+fi
+
+#$MANAGE createdb --noinput --nodata
 
 
-echo "Executing 'python ${OPENSHIFT_REPO_DIR}app/manage.py make_admin'"
-#python "$OPENSHIFT_REPO_DIR"app/manage.py make_admin
-
-echo "Executing 'python ${OPENSHIFT_REPO_DIR}app/manage.py collectstatic --noinput -v0'"
-python "$OPENSHIFT_REPO_DIR"app/manage.py collectstatic --noinput -v0
+echo "Executing $MANAGE collectstatic --noinput -v0'"
+$MANAGE collectstatic --noinput -v0
