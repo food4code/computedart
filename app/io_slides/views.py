@@ -46,10 +46,10 @@ def slides_write(request, dir_name):
     f.write(template)
 #    f.write()
     f.close()
-    management.call_command('collectstatic', interactive=False)
+    #management.call_command('collectstatic', interactive=False)
 
     return redirect("/static/" + dir_name + '.html')
-#    return HttpResponse(template)
+    #return HttpResponse(template)
 
 def slides_send(request):
     # Create the HttpResponse object with the appropriate CSV header.
