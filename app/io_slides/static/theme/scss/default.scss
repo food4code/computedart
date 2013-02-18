@@ -2,8 +2,8 @@
 @import "compass/css3/columns";
 @import "compass/css3/user-interface";
 
-$social-tags: '#yourhashtag';
-$brand-small-icon-size: 30px;
+$social-tags: 'computedart.org';
+$brand-small-icon-size: 60px;
 
 $gray-1: #e6e6e6;
 $gray-2: #a9a9a9;
@@ -173,10 +173,12 @@ slides > slide {
       content: $social-tags;
       position: absolute;
       bottom: $slide-top-bottom-padding / 2;
+      /*left: $slide-left-right-padding;*/
       left: $slide-left-right-padding;
-      background: url(../../images/google_developers_icon_128.png) no-repeat 0 50%;
+      background: url(../../images/shellexp-logo-i.png) no-repeat 0 0;
       @include background-size($brand-small-icon-size $brand-small-icon-size);
-      padding-left: $brand-small-icon-size + 10;
+      padding-left: 10px;
+      padding-top: $brand-small-icon-size/2;
       height: $brand-small-icon-size;
       line-height: 1.9;
     }

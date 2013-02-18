@@ -16,6 +16,7 @@ admin.autodiscover()
 
 urlpatterns = patterns("",
 
+    url(r'^slides/', include('io_slides.urls')),
 #    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', { 'document_root': settings.STATIC_ROOT} ) ,
     # Change the admin prefix here to use an alternate URL for the
     # admin interface, which would be marginally more secure.
