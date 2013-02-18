@@ -1,6 +1,7 @@
 #*.db
 local_settings.py
 /static
+app/static
 *~
 .idea
 default
