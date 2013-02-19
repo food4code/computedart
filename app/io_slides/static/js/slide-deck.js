@@ -240,10 +240,15 @@ SlideDeck.prototype.onBodyKeyDown_ = function(e) {
       if (e.target == document.body && !(e.shiftKey && e.metaKey)) {
         if (document.mozFullScreen !== undefined && !document.mozFullScreen) {
           document.body.mozRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+          document.body.style.MozTransform = 'scale(' + 1.5 + ')';
         } else if (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen) {
           document.body.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+          document.body.style.WebkitTransform = 'scale(' + 1.5 + ')';
         } else {
           document.cancelFullScreen();
+          document.body.style.WebkitTransform = 'scale(' + 1 + ')';
+          document.body.style.MozTransform = 'scale(' + 1 + ')';
+
         }
       }
       break;
@@ -256,6 +261,7 @@ SlideDeck.prototype.onBodyKeyDown_ = function(e) {
       break;
   }
 };
+
 
 /**
  *

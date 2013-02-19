@@ -1,3 +1,4 @@
+from PIL import Image
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import loader, Context
@@ -11,9 +12,11 @@ from django.core import management
 def upload_list():
     file_dir = os.listdir(os.path.join(settings.MEDIA_ROOT ,'uploads'))
 
-def slides_write(request, dir_name):
+MAXWIDTH = 980
+MAXHEIGHT = 600
+DELTA = 50
 
-    size = (0, 600)
+def slides_write(request, dir_name):
 
     cdir = os.path.dirname(os.path.abspath(__file__))
     file_dir = os.path.join(settings.MEDIA_ROOT ,'uploads', dir_name)
@@ -25,6 +28,18 @@ def slides_write(request, dir_name):
     thumb_list = []
 
     for image_name in file_abs_list:
+        img = Image.open(image_name)
+        w, h = img.size
+        if w == h or abs(w - h) < DELTA:
+            size = (MAXHEIGHT, MAXHEIGHT)
+        elif w > h: #landscape image
+            if w / float(h) > 1.5:
+                size = (MAXWIDTH, 0)
+            else:
+                size = (0, MAXHEIGHT)
+        else:
+            size = (0, MAXHEIGHT)
+
         thumb_image = os.path.join(thumb_dir, os.path.basename(image_name).replace(".", "-%sx%s." % size) )
         if not os.path.exists(thumb_image):
             print "Processing", thumb_image
