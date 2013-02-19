@@ -7,27 +7,54 @@ from mezzanine.core.templatetags.mezzanine_tags import thumbnail
 import glob
 import codecs
 import os
-from django.core import management
+import zipfile
+from app.gallerie.models import Galleria, GalleriaImage
+from mezzanine.core.fields import FileField
+from django.core.files.base import ContentFile
+from django.core.files import File
 
 def upload_list():
-    file_dir = os.listdir(os.path.join(settings.MEDIA_ROOT ,'uploads'))
+    image_dir = os.listdir(os.path.join(settings.MEDIA_ROOT ,'uploads'))
 
 MAXWIDTH = 980
 MAXHEIGHT = 600
 DELTA = 50
+#                                               Galleria.objects.get(pk=2).delete()
+
 
 def slides_write(request, dir_name):
 
     cdir = os.path.dirname(os.path.abspath(__file__))
-    file_dir = os.path.join(settings.MEDIA_ROOT ,'uploads', dir_name)
+    image_dir = os.path.join(settings.MEDIA_ROOT ,'uploads', dir_name)
     template_file = os.path.join(cdir, 'static', dir_name + '.html')
-    file_abs_list = sorted( glob.glob( os.path.join(file_dir , '*.jpg' )) )
-    file_list = map(lambda f: '/'.join(f.split('/')[-3:]), file_abs_list)
+    image_abs_list = sorted( glob.glob( os.path.join(image_dir , '*.jpg' )) )
 
-    thumb_dir = os.path.join(file_dir, settings.THUMBNAILS_DIR_NAME)
+    thumb_dir = os.path.join(image_dir, settings.THUMBNAILS_DIR_NAME)
     thumb_list = []
 
-    for image_name in file_abs_list:
+    gal = Galleria.objects.filter(title=dir_name)
+    if not gal:
+        zip_name = os.path.join(settings.MEDIA_ROOT, dir_name+'.zip')
+        zip = zipfile.ZipFile(zip_name, 'w')
+        for image_name in image_abs_list:
+            zip.write(image_name, os.path.basename(image_name))
+        zip.close()
+        gal = Galleria.objects.create(title=dir_name, zip_import=zip_name)
+        gal.save()
+
+
+#        print list(gal.images.all())
+#        for root, dirs, files in os.walk(dir_name):
+
+#        for image_name in image_abs_list:
+#            image_base = os.path.basename(image_name)
+#            fh = open(image_name)
+#            gal_image = GalleriaImage(gallery=gal)
+#            gal_image.file.save(image_name, File(fh))
+#            gal_image.save()
+    for image_name in image_abs_list:
+        image_base = os.path.basename(image_name)
+
         img = Image.open(image_name)
         w, h = img.size
         if w == h or abs(w - h) < DELTA:
@@ -39,8 +66,8 @@ def slides_write(request, dir_name):
                 size = (0, MAXHEIGHT)
         else:
             size = (0, MAXHEIGHT)
-
-        thumb_image = os.path.join(thumb_dir, os.path.basename(image_name).replace(".", "-%sx%s." % size) )
+        image_base = os.path.splitext(image_base)
+        thumb_image = os.path.join(thumb_dir, image_base[0]+ "-%sx%s" % size+ image_base[1])
         if not os.path.exists(thumb_image):
             print "Processing", thumb_image
             thumb_image = thumbnail(image_name, *size)
@@ -48,7 +75,7 @@ def slides_write(request, dir_name):
         thumb_image = thumb_image.split('/static/')[1]
         thumb_list.append(thumb_image)
 
-    print thumb_list
+#    print thumb_list
 
     t = loader.get_template('dtemplate.html')
     c = Context({
