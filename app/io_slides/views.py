@@ -45,8 +45,8 @@ def make_thumb(image_abs_list, image_dir):
         if not os.path.exists(thumb_image):
             print "Processing", thumb_image
             thumb_image = thumbnail(image_name, *size)
-        #else:   print "skipping", thumb_image
-        thumb_list.append(os.path.basename(thumb_image))
+            thumb_list.append(os.path.basename(thumb_image))
+            #else:   print "skipping", thumb_image
 
         ### Move original file
         orig_dir = os.path.join(image_dir, 'orig')
@@ -65,22 +65,27 @@ def slides_write(request, dir_name):
     thumb_dir = os.path.join(image_dir, settings.THUMBNAILS_DIR_NAME)
 
     gal = Galleria.objects.filter(title=dir_name)
-    image_list = []
-    if not gal:
+    if not gal:  ### new Gallery
         image_list = make_thumb(image_abs_list, image_dir)
         zip_name = os.path.join(settings.MEDIA_ROOT, dir_name+'.zip')
         zip = zipfile.ZipFile(zip_name, 'w')
         for im in glob.glob( os.path.join(thumb_dir , '*.jpg' )):
             zip.write(im, os.path.basename(im))
         zip.close()
-        gal = Galleria.objects.create(title=dir_name, zip_import=zip_name)
+        gal = Galleria.objects.create(title=dir_name, content="_", zip_import=zip_name)
         gal.save()
-
-    else:
+    else:  ### update existing Gallery
         print "*****************************"
-        ### TODO: check for new files
-        gal = Galleria.objects.get(title=dir_name)
+        ### check for new files
+        made_thumbs = glob.glob( os.path.join(image_dir , '*[0-9]*x[0-9]*.jpg' ))
+        todo_thumbs = list(set(image_abs_list) - set(made_thumbs))
+        image_list = make_thumb(todo_thumbs, image_dir)
+        map(lambda img: shutil.copy( os.path.join(thumb_dir, img), image_dir), image_list )
 
+
+        gal = Galleria.objects.get(title=dir_name)
+        gal.content = "_"
+        gal.save()
         for gi in gal.images.all():
             image_list.append(gi.file.filename)
 
