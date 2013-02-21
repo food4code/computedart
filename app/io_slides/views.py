@@ -60,7 +60,7 @@ def slides_write(request, dir_name):
 
     cdir = os.path.dirname(os.path.abspath(__file__))
     image_dir = os.path.join(settings.MEDIA_ROOT ,'uploads', dir_name)
-    template_file = os.path.join(cdir, 'static', dir_name + '.html')
+    template_file = os.path.join(cdir, 'static', 'template.html')
     image_abs_list = sorted( glob.glob( os.path.join(image_dir , '*.jpg' )) )
     thumb_dir = os.path.join(image_dir, settings.THUMBNAILS_DIR_NAME)
 
@@ -83,27 +83,30 @@ def slides_write(request, dir_name):
         map(lambda img: shutil.copy( os.path.join(thumb_dir, img), image_dir), image_list )
 
 
-        gal = Galleria.objects.get(title=dir_name)
-        gal.content = "_"
-        gal.save()
-        for gi in gal.images.all():
-            image_list.append(gi.file.filename)
+#        gal = Galleria.objects.get(title=dir_name)
+#        gal.content = "_"
+#        gal.save()
+#        for gi in gal.images.all():
+#            image_list.append(gi.file.filename)
 
     image_list = map(lambda img: os.path.join(image_dir.split('/static/')[1], img), image_list )
 
-    print image_list
+    for g in Galleria.objects.all():
+        print g.title
+        for f in g.images.all():
+            print f.file.url
 
     t = loader.get_template('dtemplate.html')
     c = Context({
-        'dir_name': dir_name,
-        'file_list': image_list
+        'galleries': Galleria.objects.all()
+#        'file_list': image_list
     })
     template = t.render(c)
     f = codecs.open(template_file, "w", "utf-8")
     f.write(template)
     f.close()
 
-    return redirect("/static/" + dir_name + '.html')
+    return redirect("/static/template.html")
 
 def slides_send(request):
     # Create the HttpResponse object with the appropriate CSV header.

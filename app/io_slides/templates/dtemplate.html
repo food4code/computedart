@@ -33,40 +33,25 @@ URL: https://code.google.com/p/io-2012-slides
       <p data-config-presenter><!-- populated from slide_config.json --></p>
     </hgroup>
   </slide>
+{#  {% with page.galleria.objects.all as gal %}#}
+  {% for gal in galleries %}
   <slide>
     <hgroup class="hidden auto-fadein flexbox vcenter">
-      <h2>{{ dir_name }}</h2>
+      <h2>{{ gal.title }}</h2>
     </hgroup>
   </slide>
 
-  {% for image in file_list %}
+  {% for image in gal.images.all %}
   <slide>
 {#  <slide class="fill nobackground" style="background-image: url( {{ image }} )">#}
     <article class="flexbox vcenter">
-      <img src="{{ image }}" alt="Description" title="Description">
+      <img src="{{ MEDIA_URL }}{{ image.file }}" alt="Description" title="Description">
       <!-- <footer class="source white">Description info here</footer> -->
     </article>
   </slide>
   {% endfor %}
-  <slide>
-    <aside class="note">
-      <section>
-        <ul>
-          <li>Point I wanted to make #1</li>
-          <li>Point I wanted to make #2</li>
-          <li>Point I wanted to make #3</li>
-          <li>Example <a href="#">link</a> in notes.</li>
-        </ul>
-        <p><b>Remember to say this tag line!</b></p>
-      </section>
-    </aside>
-    <hgroup>
-      <h2>Slide with Speaker Notes</h2>
-    </hgroup>
-    <article>
-      <p>Press 'p' to toggle speaker notes.</p>
-    </article>
-  </slide>
+  {% endfor %}
+{#  {% endwith %}#}
 
   <slide class="thank-you-slide segue nobackground">
     <aside class="gdbar right"><img src="images/shellexp-logo-b.png"></aside>
